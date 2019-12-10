@@ -25,6 +25,10 @@ import modeling
 import optimization_finetuning as optimization
 import tokenization
 import tensorflow as tf
+
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
 # from loss import bi_tempered_logistic_loss
 
 flags = tf.flags
@@ -697,6 +701,47 @@ class SentencePairClassificationProcessor(DataProcessor):
           print('###error.i:', i, line)
     return examples
 
+
+class ClaProcessor(DataProcessor):
+  """Processor for the definition data set (myself)."""
+
+  def get_train_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_tsv(os.path.join(data_dir, "train.tsv")), "train")
+
+  def get_dev_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+
+  def get_test_examples(self, data_dir):
+    """See base class."""
+    return self._create_examples(
+        self._read_tsv(os.path.join(data_dir, "test.tsv")), "test")
+
+  def get_labels(self):
+    """See base class."""
+    return ['0','1','2','3','4','5','6','7','8','9','10','11','12',
+            '13','14','15']
+
+  def _create_examples(self, lines, set_type):
+    """Creates examples for the training and dev sets."""
+    examples = []
+    for (i, line) in enumerate(lines):
+      #if i == 0:
+       # continue
+      guid = "%s-%s" % (set_type, i)
+      if set_type == "test":
+         text_a = tokenization.convert_to_unicode(line[1])
+         label ="0"
+      else:
+        text_a = tokenization.convert_to_unicode(line[1])
+        label = tokenization.convert_to_unicode(line[0])
+      examples.append(
+          InputExample(guid=guid, text_a=text_a,  label=label))
+    return examples
+
 # This function is not used by this file but is still used by the Colab and
 # people who depend on it.
 def convert_examples_to_features(examples, label_list, max_seq_length,
@@ -721,7 +766,8 @@ def main(_):
   processors = {
       "sentence_pair": SentencePairClassificationProcessor,
       "lcqmc_pair":LCQMCPairClassificationProcessor,
-      "lcqmc": LCQMCPairClassificationProcessor
+      "lcqmc": LCQMCPairClassificationProcessor,
+      "cla": ClaProcessor
 
   }
 
