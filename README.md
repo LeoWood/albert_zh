@@ -1,3 +1,32 @@
+### 万方数据医学领域分类实验
+
+**albert_zh 用于分类任务**
+- Exp1(400*10，data6000)
+```bash
+python run_classifier.py^
+ --data_dir data/data16000^
+ --bert_config_file models/albert_large_zh/config.json^
+ --task_name cla^
+ --vocab_file models/albert_large_zh/vocab.txt^
+ --output_dir outputs/Exp1^
+ --init_checkpoint models/albert_large_zh^
+ --max_seq_length 400^
+ --do_train True^
+ --do_eval True^
+ --do_predict False^
+ --train_batch_size 10^
+ --learning_rate 5e-5^
+ --num_train_epochs 3.0
+```
+
+
+
+
+
+
+#### 以下为原描述
+------------------------------------------------------
+
 # albert_zh
 
 An Implementation of <a href="https://arxiv.org/pdf/1909.11942.pdf">A Lite Bert For Self-Supervised Learning Language Representations</a> with TensorFlow
@@ -21,13 +50,13 @@ Different version of ALBERT pre-trained model for Chinese, including TensorFlow,
 1、<a href="https://storage.googleapis.com/albert_zh/albert_tiny.zip">albert_tiny_zh</a>, <a href="https://storage.googleapis.com/albert_zh/albert_tiny_489k.zip">albert_tiny_zh(训练更久，累积学习20亿个样本)</a>，文件大小16M、参数为4M
 
     训练和推理预测速度提升约10倍，精度基本保留，模型大小为bert的1/25；语义相似度数据集LCQMC测试集上达到85.4%，相比bert_base仅下降1.5个点。
-
+    
     lcqmc训练使用如下参数： --max_seq_length=128 --train_batch_size=64   --learning_rate=1e-4   --num_train_epochs=5 
     
     albert_tiny使用同样的大规模中文语料数据，层数仅为4层、hidden size等向量维度大幅减少; 尝试使用如下学习率来获得更好效果：{2e-5, 6e-5, 1e-4} 
     
     【使用场景】任务相对比较简单一些或实时性要求高的任务，如语义相似度等句子对任务、分类任务；比较难的任务如阅读理解等，可以使用其他大模型。
-
+    
      例如，可以使用[Tensorflow Lite](https://www.tensorflow.org/lite)在移动端进行部署，本文[随后](#use_tflite)针对这一点进行了介绍，包括如何把模型转换成Tensorflow Lite格式和对其进行性能测试等。
      
      一键运行albert_tiny_zh(linux,lcqmc任务)：
@@ -39,9 +68,9 @@ Different version of ALBERT pre-trained model for Chinese, including TensorFlow,
 1.2、<a href="https://storage.googleapis.com/albert_zh/albert_small_zh_google.zip">albert_small_google_zh(累积学习10亿个样本,google版本)</a>，
      
      速度比bert_base快4倍；LCQMC测试集上比Bert下降仅0.9个点；去掉adam后模型大小18.5M；使用方法，见 #下游任务 Fine-tuning on Downstream Task     
-     
+
 2、<a href="https://storage.googleapis.com/albert_zh/albert_large_zh.zip">albert_large_zh</a>,参数量，层数24，文件大小为64M
-   
+
     参数量和模型大小为bert_base的六分之一；在口语化描述相似性数据集LCQMC的测试集上相比bert_base上升0.2个点
 
 3、<a href="https://storage.googleapis.com/albert_zh/albert_base_zh_additional_36k_steps.zip">albert_base_zh(额外训练了1.5亿个实例即 36k steps * batch_size 4096)</a>; <a href="https://storage.googleapis.com/albert_zh/albert_base_zh.zip"> albert_base_zh(小模型体验版)</a>, 参数量12M, 层数12，大小为40M
@@ -51,7 +80,7 @@ Different version of ALBERT pre-trained model for Chinese, including TensorFlow,
 
 4、<a href="https://storage.googleapis.com/albert_zh/albert_xlarge_zh_177k.zip">albert_xlarge_zh_177k </a>; 
 <a href="https://storage.googleapis.com/albert_zh/albert_xlarge_zh_183k.zip">albert_xlarge_zh_183k(优先尝试)</a>参数量，层数24，文件大小为230M
-   
+
     参数量和模型大小为bert_base的二分之一；需要一张大的显卡；完整测试对比将后续添加；batch_size不能太小，否则可能影响精度
 
 
@@ -61,9 +90,9 @@ Different version of ALBERT pre-trained model for Chinese, including TensorFlow,
 #### 生成特定格式的文件(tfrecords) Generate tfrecords Files
 
 Run following command 运行以下命令即可。项目自动了一个示例的文本文件(data/news_zh_1.txt)
-   
+
        bash create_pretrain_data.sh
-   
+
 如果你有很多文本文件，可以通过传入参数的方式，生成多个特定格式的文件(tfrecords）
 
 ###### Support English and Other Non-Chinese Language: 
@@ -132,12 +161,12 @@ We will use LCQMC dataset for fine-tuning, it is oral language corpus, it is use
         nohup python3 run_classifier_sp_google.py --task_name=lcqmc_pair   --do_train=true   --do_eval=true   --data_dir=$TEXT_DIR   --vocab_file=./albert_config/vocab.txt  \
         --albert_config_file=./$BERT_BASE_DIR/albert_config_small_google.json --max_seq_length=128 --train_batch_size=64   --learning_rate=1e-4   --num_train_epochs=5 \
         --output_dir=./albert_lcqmc_checkpoints --init_checkpoint=$BERT_BASE_DIR/albert_model.ckpt &
-
+    
     Notice/注：
         1) you need to download pre-trained chinese albert model, and also download LCQMC dataset 
         你需要下载预训练的模型，并放入到项目当前项目，假设目录名称为albert_tiny_zh; 需要下载LCQMC数据集，并放入到当前项目，
         假设数据集目录名称为lcqmc
-
+    
         2) for Fine-tuning, you can try to add small percentage of dropout(e.g. 0.1) by changing parameters of 
           attention_probs_dropout_prob & hidden_dropout_prob on albert_config_xxx.json. By default, we set dropout as zero. 
         
@@ -185,7 +214,7 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
 它对BERT进行了三个改造 Three main changes of ALBert from Bert：
 
 1）词嵌入向量参数的因式分解 Factorized embedding parameterization
-   
+
      O(V * H) to O(V * E + E * H)
      
      如以ALBert_xxlarge为例，V=30000, H=4096, E=128
@@ -204,7 +233,7 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
      使用段落连续性任务。正例，使用从一个文档中连续的两个文本段落；负例，使用从一个文档中连续的两个文本段落，但位置调换了。
      
      避免使用原有的NSP任务，原有的任务包含隐含了预测主题这类过于简单的任务。
-
+    
       We maintain that inter-sentence modeling is an important aspect of language understanding, but we propose a loss 
       based primarily on coherence. That is, for ALBERT, we use a sentence-order prediction (SOP) loss, which avoids topic 
       prediction and instead focuses on modeling inter-sentence coherence. The SOP loss uses as positive examples the 
@@ -236,7 +265,7 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
 预训练序列长度sequence_length设置为512，批次batch_size为4096，训练产生了3.5亿个训练数据(instance)；每一个模型默认会训练125k步，albert_xxlarge将训练更久。
 
 作为比较，roberta_zh预训练产生了2.5亿个训练数据、序列长度为256。由于albert_zh预训练生成的训练数据更多、使用的序列长度更长，
- 
+
     我们预计albert_zh会有比roberta_zh更好的性能表现，并且能更好处理较长的文本。
 
 训练使用TPU v3 Pod，我们使用的是v3-256，它包含32个v3-8。每个v3-8机器，含有128G的显存。
@@ -245,8 +274,8 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
 模型性能与对比(英文) Performance and Comparision
 -----------------------------------------------    
 <img src="https://github.com/brightmart/albert_zh/blob/master/resources/state_of_the_art.jpg"  width="80%" height="40%" />
-  
-   
+
+
 <img src="https://github.com/brightmart/albert_zh/blob/master/resources/albert_performance.jpg"  width="80%" height="40%" />
 
 
@@ -260,9 +289,9 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
 
 | 模型 | 开发集(Dev) | 测试集(Test) |
 | :------- | :---------: | :---------: |
-| BERT | 89.4(88.4) | 86.9(86.4) | 
-| ERNIE | 89.8 (89.6) | 87.2 (87.0) | 
-| BERT-wwm |89.4 (89.2) | 87.0 (86.8) | 
+| BERT | 89.4(88.4) | 86.9(86.4) |
+| ERNIE | 89.8 (89.6) | 87.2 (87.0) |
+| BERT-wwm |89.4 (89.2) | 87.0 (86.8) |
 | BERT-wwm-ext | - |-  |
 | RoBERTa-zh-base | 88.7 | 87.0  |
 | RoBERTa-zh-Large | ***89.9(89.6)*** | 87.2(86.7) |
@@ -281,9 +310,9 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
 
 | 模型 | 开发集 | 测试集 |
 | :------- | :---------: | :---------: |
-| BERT | 77.8 (77.4) | 77.8 (77.5) | 
-| ERNIE | 79.7 (79.4) | 78.6 (78.2) | 
-| BERT-wwm | 79.0 (78.4) | 78.2 (78.0) | 
+| BERT | 77.8 (77.4) | 77.8 (77.5) |
+| ERNIE | 79.7 (79.4) | 78.6 (78.2) |
+| BERT-wwm | 79.0 (78.4) | 78.2 (78.0) |
 | BERT-wwm-ext | 79.4 (78.6) | 78.7 (78.3) |
 | XLNet | 79.2  | 78.7 |
 | RoBERTa-zh-base | 79.8 |78.8  |
@@ -293,7 +322,7 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
 | ALBERT-xlarge | ? | ? |
 
 注：BERT-wwm-ext来自于<a href="https://github.com/ymcui/Chinese-BERT-wwm">这里</a>；XLNet来自于<a href="https://github.com/ymcui/Chinese-PreTrained-XLNet">这里</a>; RoBERTa-zh-base，指12层RoBERTa中文模型
-   
+
 
 ###  阅读理解任务：CRMC2018
 
@@ -335,7 +364,7 @@ ALBERT模型是BERT的改进版，与最近其他State of the art的模型不同
 Ensure to have >=1.14 1.x installed to use the freeze_graph tool as it is removed from 2.x distribution
 
     pip install tensorflow==1.15
-
+    
     freeze_graph --input_checkpoint=./albert_model.ckpt \
       --output_graph=/tmp/albert_tiny_zh.pb \
       --output_node_names=cls/predictions/truediv \
@@ -346,7 +375,7 @@ Ensure to have >=1.14 1.x installed to use the freeze_graph tool as it is remove
 We are going to use the new experimental tf->tflite converter that's distributed with the Tensorflow nightly build.
 
     pip install tf-nightly
-
+    
     tflite_convert --graph_def_file=/tmp/albert_tiny_zh.pb \
       --input_arrays='input_ids,input_mask,segment_ids,masked_lm_positions,masked_lm_ids,masked_lm_weights' \
       --output_arrays='cls/predictions/truediv' \
@@ -375,9 +404,9 @@ implementation optimizations.
     download pre-trained model, and convert to PyTorch using:
      
       python convert_albert_tf_checkpoint_to_pytorch.py     
-     
+
    using <a href="https://github.com/lonePatient/albert_pytorch">albert_pytorch
-   
+
 ##### 使用Keras加载:
 
 <a href="https://github.com/bojone/bert4keras">bert4keras</a> 适配albert，能成功加载albert_zh的权重，只需要在load_pretrained_model函数里加上albert=True
