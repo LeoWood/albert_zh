@@ -27,7 +27,7 @@ import tokenization
 import tensorflow as tf
 
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+
 
 # from loss import bi_tempered_logistic_loss
 
@@ -36,6 +36,11 @@ flags = tf.flags
 FLAGS = flags.FLAGS
 
 ## Required parameters
+flags.DEFINE_string(
+    "gpu", '0',
+    "gpu id")
+
+
 flags.DEFINE_string(
     "data_dir", None,
     "The input data dir. Should contain the .tsv files (or other data files) "
@@ -128,6 +133,8 @@ flags.DEFINE_integer(
     "num_tpu_cores", 8,
     "Only used if `use_tpu` is True. Total number of TPU cores to use.")
 
+
+os.environ['CUDA_VISIBLE_DEVICES'] = str(FLAGS.gpu)
 
 class InputExample(object):
   """A single training/test example for simple sequence classification."""
