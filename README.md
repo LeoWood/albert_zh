@@ -19,8 +19,30 @@ python run_classifier.py^
  --num_train_epochs 3.0
 ```
 
+- 发现训练速度极慢
+```bash
+INFO:tensorflow:Saving checkpoints for 6400 into outputs/Exp1\model.ckpt.
+INFO:tensorflow:global_step/sec: 0.16728
+INFO:tensorflow:examples/sec: 1.6728
+INFO:tensorflow:global_step/sec: 0.170311
+INFO:tensorflow:examples/sec: 1.70311
+INFO:tensorflow:global_step/sec: 0.170381
+INFO:tensorflow:examples/sec: 1.70381
+INFO:tensorflow:global_step/sec: 0.170203
+INFO:tensorflow:examples/sec: 1.70203
+```
+- 同样在GTX 1080 ti, bert训练速度：
+```bash
+INFO:tensorflow:global_step/sec: 1.9862
+INFO:tensorflow:examples/sec: 63.5582
+INFO:tensorflow:global_step/sec: 1.98445
+INFO:tensorflow:examples/sec: 63.5025
+INFO:tensorflow:global_step/sec: 1.97224
+INFO:tensorflow:examples/sec: 63.1118
+INFO:tensorflow:global_step/sec: 1.97336
+INFO:tensorflow:examples/sec: 63.1475
 
-
+```
 
 
 

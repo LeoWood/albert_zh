@@ -1,12 +1,3 @@
-# data
-data16000/
-data32000/
-
-# model
-models/
-
-# output
-outputs/
 
 # other
 __pycache__/

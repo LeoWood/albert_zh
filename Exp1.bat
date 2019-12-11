@@ -8,9 +8,8 @@ python run_classifier.py^
  --max_seq_length 400^
  --do_train True^
  --do_eval True^
- --do_predict False^
  --train_batch_size 10^
  --learning_rate 5e-5^
- --num_train_epochs 3.0
+ --num_train_epochs 5.0
   
 
