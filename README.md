@@ -44,7 +44,37 @@ INFO:tensorflow:examples/sec: 63.1475
 
 ```
 
+- Exp3
+```bash
+:: albert_tiny_489k 2e-5 400*10
+python run_classifier.py^
+ --data_dir data/data16000^
+ --bert_config_file models/albert_tiny_489k/albert_config_tiny.json^
+ --task_name cla^
+ --vocab_file models/albert_tiny_489k/vocab.txt^
+ --output_dir outputs/Exp3^
+ --init_checkpoint models/albert_tiny_489k/albert_model.ckpt^
+ --max_seq_length 400^
+ --do_train True^
+ --do_eval True^
+ --train_batch_size 10^
+ --learning_rate 2e-5^
+ --num_train_epochs 7.0^
+ --gpu 1
+```
 
+- 训练速度较快
+```bash
+INFO:tensorflow:Saving checkpoints for 10600 into outputs/Exp3\model.ckpt.
+INFO:tensorflow:global_step/sec: 9.41119
+INFO:tensorflow:examples/sec: 94.1119
+INFO:tensorflow:global_step/sec: 10.5965
+INFO:tensorflow:examples/sec: 105.965
+INFO:tensorflow:global_step/sec: 10.6508
+INFO:tensorflow:examples/sec: 106.508
+INFO:tensorflow:global_step/sec: 10.1428
+INFO:tensorflow:examples/sec: 101.428
+```
 
 #### 以下为原描述
 ------------------------------------------------------

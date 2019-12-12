@@ -10,7 +10,7 @@ python run_classifier.py^
  --do_eval True^
  --train_batch_size 10^
  --learning_rate 5e-5^
- --num_train_epochs 8.0^
+ --num_train_epochs 10.0^
  --gpu 0
   
 
