@@ -33,15 +33,53 @@ INFO:tensorflow:examples/sec: 1.70203
 ```
 - 同样在GTX 1080 ti, bert训练速度：
 ```bash
-INFO:tensorflow:global_step/sec: 1.9862
-INFO:tensorflow:examples/sec: 63.5582
-INFO:tensorflow:global_step/sec: 1.98445
-INFO:tensorflow:examples/sec: 63.5025
-INFO:tensorflow:global_step/sec: 1.97224
-INFO:tensorflow:examples/sec: 63.1118
-INFO:tensorflow:global_step/sec: 1.97336
-INFO:tensorflow:examples/sec: 63.1475
+INFO:tensorflow:global_step/sec: 1.6718
+INFO:tensorflow:examples/sec: 16.718
+INFO:tensorflow:global_step/sec: 1.81456
+INFO:tensorflow:examples/sec: 18.1456
+INFO:tensorflow:global_step/sec: 1.80174
+INFO:tensorflow:examples/sec: 18.0174
+INFO:tensorflow:global_step/sec: 1.80048
+INFO:tensorflow:examples/sec: 18.0048
+INFO:tensorflow:global_step/sec: 1.80035
+INFO:tensorflow:examples/sec: 18.0035
+INFO:tensorflow:global_step/sec: 1.79599
+INFO:tensorflow:examples/sec: 17.9599
 
+
+```
+
+- Exp2
+
+```bash
+python run_classifier.py^
+ --data_dir data/data16000^
+ --bert_config_file models/albert_base_zh_additional_36k_steps/albert_config_base.json^
+ --task_name cla^
+ --vocab_file models/albert_base_zh_additional_36k_steps/vocab.txt^
+ --output_dir outputs/Exp2^
+ --init_checkpoint models/albert_base_zh_additional_36k_steps/albert_model.ckpt^
+ --max_seq_length 400^
+ --do_train True^
+ --do_eval True^
+ --train_batch_size 10^
+ --learning_rate 5e-5^
+ --num_train_epochs 7.0^
+ --gpu 1
+```
+
+- 训练速度
+```bash
+INFO:tensorflow:global_step/sec: 2.07391
+INFO:tensorflow:examples/sec: 20.7391
+INFO:tensorflow:global_step/sec: 2.06802
+INFO:tensorflow:examples/sec: 20.6802
+INFO:tensorflow:global_step/sec: 2.06699
+INFO:tensorflow:examples/sec: 20.6699
+INFO:tensorflow:global_step/sec: 2.07184
+INFO:tensorflow:examples/sec: 20.7184
+INFO:tensorflow:global_step/sec: 2.06952
+INFO:tensorflow:examples/sec: 20.6952
 ```
 
 - Exp3
@@ -74,6 +112,43 @@ INFO:tensorflow:global_step/sec: 10.6508
 INFO:tensorflow:examples/sec: 106.508
 INFO:tensorflow:global_step/sec: 10.1428
 INFO:tensorflow:examples/sec: 101.428
+```
+
+- Exp8
+```bash
+:: albert_small_google 2e-5 400*10
+python run_classifier.py^
+ --data_dir data/data16000^
+ --bert_config_file models/albert_small_zh_google/albert_config_small_google.json^
+ --task_name cla^
+ --vocab_file models/albert_small_zh_google/vocab.txt^
+ --output_dir outputs/Exp8_small_2e-5^
+ --init_checkpoint models/albert_small_zh_google/albert_model.ckpt^
+ --max_seq_length 400^
+ --do_train True^
+ --do_eval True^
+ --train_batch_size 10^
+ --learning_rate 2e-5^
+ --num_train_epochs 3.0^
+ --gpu 0
+  
+```
+
+- 速度
+
+```bash
+INFO:tensorflow:global_step/sec: 6.9419
+INFO:tensorflow:examples/sec: 69.419
+INFO:tensorflow:global_step/sec: 7.03741
+INFO:tensorflow:examples/sec: 70.3741
+INFO:tensorflow:global_step/sec: 7.02799
+INFO:tensorflow:examples/sec: 70.2799
+INFO:tensorflow:global_step/sec: 7.00037
+INFO:tensorflow:examples/sec: 70.0037
+INFO:tensorflow:global_step/sec: 7.03146
+INFO:tensorflow:examples/sec: 70.3146
+INFO:tensorflow:Saving checkpoints for 1000 into outputs/Exp8_small_2e-5\model.ckpt.
+INFO:tensorflow:global_step/sec: 6.3432
 ```
 
 #### 以下为原描述
